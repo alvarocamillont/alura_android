@@ -12,26 +12,40 @@ import java.math.BigDecimal
 class FormularioProdutoActivity :
     AppCompatActivity(R.layout.activity_formulario_produto) {
 
+    val dao = ProdutosDao()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val botaoSalvar = findViewById<Button>(R.id.botao_salvar)
-        botaoSalvar.setOnClickListener {
-            val campoNome = findViewById<EditText>(R.id.nome)
-            val nome = campoNome.text.toString()
-            val campoDescricao = findViewById<EditText>(R.id.descricao)
-            val descricao = campoDescricao.text.toString()
-            val campoValor = findViewById<EditText>(R.id.valor)
-            val valorEmTexto = campoValor.text.toString()
-            val valor = if(valorEmTexto.isBlank()) {BigDecimal.ZERO}else{BigDecimal(valorEmTexto)}
+        configuraBotaoSalvar()
+    }
 
-            val produtoNovo = Produto(
-                nome = nome,
-                descricao=descricao,
-                valor= valor
-            )
-            val dao = ProdutosDao()
-            dao.adiciona(produtoNovo)
+    private fun configuraBotaoSalvar() {
+        val botaoSalvar = findViewById<Button>(R.id.activity_formulario_produtos_botao_salvar)
+        botaoSalvar.setOnClickListener {
+            val produtoNovo = criaProduto()
+
+            this.dao.adiciona(produtoNovo)
             finish()
         }
+    }
+
+    private fun criaProduto(): Produto {
+        val campoNome = findViewById<EditText>(R.id.activity_formulario_produtos_nome)
+        val nome = campoNome.text.toString()
+        val campoDescricao = findViewById<EditText>(R.id.activity_formulario_produtos_descricao)
+        val descricao = campoDescricao.text.toString()
+        val campoValor = findViewById<EditText>(R.id.activity_formulario_produtos_valor)
+        val valorEmTexto = campoValor.text.toString()
+        val valor = if (valorEmTexto.isBlank()) {
+            BigDecimal.ZERO
+        } else {
+            BigDecimal(valorEmTexto)
+        }
+
+        return Produto(
+            nome = nome,
+            descricao = descricao,
+            valor = valor
+        )
     }
 }
