@@ -1,12 +1,11 @@
 package com.example.orgs.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import com.example.orgs.R
+import com.example.orgs.dao.ProdutosDao
 import com.example.orgs.model.Produto
 import java.math.BigDecimal
 
@@ -30,8 +29,9 @@ class FormularioProdutoActivity :
                 descricao=descricao,
                 valor= valor
             )
-
-            Log.i("FormularioProduto", "onCreate: $produtoNovo")
+            val dao = ProdutosDao()
+            dao.adiciona(produtoNovo)
+            finish()
         }
     }
 }
